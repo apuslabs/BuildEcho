@@ -1,0 +1,12 @@
+{
+  "projectName": "work-chat",
+  "description": "Describe what you are building.",
+  "audience": "Developers",
+  "tone": "clear, honest, technical",
+  "channels": [
+    "x",
+    "linkedin",
+    "reddit",
+    "discord"
+  ]
+}

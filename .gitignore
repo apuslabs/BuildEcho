@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.buildecho/drafts/*
+!.buildecho/drafts/.gitkeep
+.buildecho/build-logs/*
+!.buildecho/build-logs/.gitkeep
+.buildecho/feedback/*
+!.buildecho/feedback/.gitkeep
+.buildecho/metrics/*
+!.buildecho/metrics/.gitkeep

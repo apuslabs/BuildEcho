@@ -1,0 +1,27 @@
+{
+  "name": "buildecho",
+  "version": "0.1.0",
+  "description": "Agentic public building for developers.",
+  "type": "module",
+  "bin": {
+    "buildecho": "./dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "check": "tsc --noEmit"
+  },
+  "keywords": [
+    "agent",
+    "build-in-public",
+    "public-building",
+    "developer-tools",
+    "github"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
