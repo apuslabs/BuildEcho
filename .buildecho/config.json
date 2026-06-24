@@ -1,6 +1,6 @@
 {
-  "projectName": "work-chat",
-  "description": "Describe what you are building.",
+  "projectName": "BuildEcho",
+  "description": "An open-source agentic public-building loop for developers.",
   "audience": "Developers",
   "tone": "clear, honest, technical",
   "channels": [

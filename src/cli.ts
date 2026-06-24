@@ -16,6 +16,23 @@ type Config = {
   channels: string[];
 };
 
+type GitCommit = {
+  hash: string;
+  subject: string;
+  author: string;
+  date: string;
+  files: string[];
+};
+
+type GitActivity = {
+  commits: GitCommit[];
+  commitWindow: string;
+  diffStat: string;
+  changedFiles: string[];
+  changedAreas: string[];
+  fallbackUsed: boolean;
+};
+
 const defaultConfig: Config = {
   projectName: guessProjectName(),
   description: "Describe what you are building.",
@@ -113,18 +130,56 @@ async function readConfig(): Promise<Config> {
 function readGitActivity() {
   if (!existsSync(join(rootDir, ".git"))) {
     return {
-      commits: ["No git repository found yet."],
+      commits: [],
+      commitWindow: "No git repository found.",
       diffStat: "No diff stat available.",
-    };
+      changedFiles: [],
+      changedAreas: [],
+      fallbackUsed: false,
+    } satisfies GitActivity;
   }
 
-  const commits = safeGit(["log", "--since=24 hours ago", "--pretty=format:- %s (%h)"]);
-  const diffStat = safeGit(["diff", "--stat", "HEAD~1..HEAD"]);
+  let fallbackUsed = false;
+  let rawCommits = safeGit([
+    "log",
+    "--since=24 hours ago",
+    "--pretty=format:%h%x09%s%x09%an%x09%ad",
+    "--date=short",
+  ]);
+
+  if (!rawCommits.trim()) {
+    fallbackUsed = true;
+    rawCommits = safeGit([
+      "log",
+      "-5",
+      "--pretty=format:%h%x09%s%x09%an%x09%ad",
+      "--date=short",
+    ]);
+  }
+
+  const commits = rawCommits
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map(parseCommitLine)
+    .filter((commit): commit is GitCommit => commit !== null)
+    .map((commit) => ({
+      ...commit,
+      files: readCommitFiles(commit.hash),
+    }));
+
+  const changedFiles = unique(commits.flatMap((commit) => commit.files));
+  const changedAreas = summarizeChangedAreas(changedFiles);
+  const diffStat = readDiffStat(commits);
 
   return {
-    commits: commits.trim() ? commits.split("\n") : ["No commits in the last 24 hours."],
+    commits,
+    commitWindow: fallbackUsed ? "Last 5 commits" : "Last 24 hours",
     diffStat: diffStat.trim() || "No diff stat available.",
-  };
+    changedFiles,
+    changedAreas,
+    fallbackUsed,
+  } satisfies GitActivity;
 }
 
 function safeGit(args: string[]) {
@@ -135,7 +190,74 @@ function safeGit(args: string[]) {
   }
 }
 
-function renderDailyLog(config: Config, date: string, activity: ReturnType<typeof readGitActivity>) {
+function parseCommitLine(line: string): GitCommit | null {
+  const [hash, subject, author, date] = line.split("\t");
+  if (!hash || !subject) {
+    return null;
+  }
+  return {
+    hash,
+    subject,
+    author: author || "unknown",
+    date: date || "unknown",
+    files: [],
+  };
+}
+
+function readCommitFiles(hash: string) {
+  const output = safeGit(["diff-tree", "--no-commit-id", "--name-only", "-r", hash]);
+  return output
+    .split("\n")
+    .map((file) => file.trim())
+    .filter(Boolean);
+}
+
+function readDiffStat(commits: GitCommit[]) {
+  if (commits.length === 0) {
+    return "";
+  }
+
+  const oldest = commits.at(-1);
+  if (!oldest) {
+    return "";
+  }
+
+  const rangeStat = safeGit(["diff", "--stat", `${oldest.hash}^..HEAD`]);
+  if (rangeStat.trim()) {
+    return rangeStat;
+  }
+
+  return safeGit(["show", "--stat", "--oneline", "--no-renames", "HEAD"]);
+}
+
+function summarizeChangedAreas(files: string[]) {
+  return unique(
+    files.map((file) => {
+      const [first, second] = file.split("/");
+      if (!second) {
+        return first;
+      }
+      if (first.startsWith(".")) {
+        return `${first}/${second}`;
+      }
+      return first;
+    }),
+  );
+}
+
+function unique(values: string[]) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+function renderDailyLog(config: Config, date: string, activity: GitActivity) {
+  const publicAngle = buildPublicAngle(config, activity);
+  const proof = buildProofList(activity);
+  const xDraft = buildXDraft(config, activity, publicAngle);
+  const linkedInDraft = buildLinkedInDraft(config, activity, publicAngle);
+  const discussionDraft = buildDiscussionDraft(config, activity, publicAngle);
+  const discordDraft = buildDiscordDraft(config, activity, publicAngle);
+  const nextStep = buildNextStep(activity);
+
   return [
     `# BuildEcho Daily - ${date}`,
     "",
@@ -143,42 +265,49 @@ function renderDailyLog(config: Config, date: string, activity: ReturnType<typeo
     `Audience: ${config.audience}`,
     `Tone: ${config.tone}`,
     `Channels: ${config.channels.join(", ")}`,
+    `Commit window: ${activity.commitWindow}`,
     "",
     "## Real Progress",
     "",
-    ...activity.commits,
+    ...renderCommitList(activity),
+    "",
+    "## What Changed",
+    "",
+    ...renderChangedAreas(activity),
     "",
     "## Evidence",
+    "",
+    ...proof,
+    "",
+    "## Diff Stat",
     "",
     "```text",
     activity.diffStat,
     "```",
     "",
-    "## Public Angles",
+    "## Public Angle",
     "",
-    "- What changed that matters to users?",
-    "- What proof can we show?",
-    "- What should wait?",
+    publicAngle,
     "",
     "## X Draft",
     "",
-    "Draft a short, honest update based on the real progress above.",
+    xDraft,
     "",
     "## LinkedIn Draft",
     "",
-    "Draft a more reflective update with context, tradeoffs, and learning.",
+    linkedInDraft,
     "",
     "## Reddit / Hacker News Draft",
     "",
-    "Draft a useful discussion post. Avoid marketing language.",
+    discussionDraft,
     "",
     "## Discord / Community Update",
     "",
-    "Draft a concise project update for existing followers.",
+    discordDraft,
     "",
     "## Next Build Step",
     "",
-    "- What should we build, document, benchmark, or ask next?",
+    `- ${nextStep}`,
     "",
     "## Quality Check",
     "",
@@ -188,6 +317,111 @@ function renderDailyLog(config: Config, date: string, activity: ReturnType<typeo
     "- [ ] Human approved before publishing",
     "",
   ].join("\n");
+}
+
+function renderCommitList(activity: GitActivity) {
+  if (activity.commits.length === 0) {
+    return ["- No commits found yet."];
+  }
+
+  return activity.commits.map((commit) => `- ${commit.subject} (${commit.hash})`);
+}
+
+function renderChangedAreas(activity: GitActivity) {
+  if (activity.changedAreas.length === 0) {
+    return ["- No changed files detected."];
+  }
+
+  return activity.changedAreas.map((area) => `- ${area}`);
+}
+
+function buildProofList(activity: GitActivity) {
+  const proof = [
+    ...activity.commits.map((commit) => `- Commit ${commit.hash}: ${commit.subject}`),
+    ...activity.changedFiles.slice(0, 12).map((file) => `- Changed file: ${file}`),
+  ];
+
+  return proof.length > 0 ? proof : ["- No proof available yet."];
+}
+
+function buildPublicAngle(config: Config, activity: GitActivity) {
+  if (activity.commits.length === 0) {
+    return `The project is ready for its next public-building loop, but there is no new git activity yet.`;
+  }
+
+  const mainCommit = activity.commits[0];
+  const areas = activity.changedAreas.slice(0, 3).join(", ");
+  const areaText = areas ? ` across ${areas}` : "";
+
+  return `${config.projectName} made concrete progress${areaText}. The useful story is not just what changed, but how this commit history becomes public proof for the next build loop.`;
+}
+
+function buildXDraft(config: Config, activity: GitActivity, publicAngle: string) {
+  const bullets = activity.commits
+    .slice(0, 4)
+    .map((commit) => `- ${commit.subject}`)
+    .join("\n");
+
+  return [
+    `${config.projectName} build update:`,
+    "",
+    publicAngle,
+    "",
+    bullets || "- No new commits yet",
+    "",
+    "Loop: commit -> proof -> public update -> feedback -> next build step.",
+  ].join("\n");
+}
+
+function buildLinkedInDraft(config: Config, activity: GitActivity, publicAngle: string) {
+  return [
+    `Today in ${config.projectName}:`,
+    "",
+    publicAngle,
+    "",
+    "The important part is the operating loop: every meaningful commit should become evidence, every public update should invite feedback, and every feedback signal should inform the next build step.",
+    "",
+    "Recent progress:",
+    ...renderCommitList(activity),
+  ].join("\n");
+}
+
+function buildDiscussionDraft(config: Config, activity: GitActivity, publicAngle: string) {
+  return [
+    `We are building ${config.projectName} in public and using the repo itself as the first test case.`,
+    "",
+    publicAngle,
+    "",
+    "Question for builders: what part of your project progress is hardest to turn into a useful public update?",
+    "",
+    "Recent commits:",
+    ...renderCommitList(activity),
+  ].join("\n");
+}
+
+function buildDiscordDraft(config: Config, activity: GitActivity, publicAngle: string) {
+  return [
+    `Build update for ${config.projectName}: ${publicAngle}`,
+    "",
+    "Recent commits:",
+    ...renderCommitList(activity).slice(0, 5),
+  ].join("\n");
+}
+
+function buildNextStep(activity: GitActivity) {
+  if (activity.commits.length === 0) {
+    return "Make the first small commit, then run BuildEcho again to generate a real public-building log.";
+  }
+
+  if (activity.changedAreas.includes("src")) {
+    return "Add a quality check that flags unsupported claims in generated drafts.";
+  }
+
+  if (activity.changedAreas.includes("docs") || activity.changedFiles.includes("README.md")) {
+    return "Turn the improved docs into an example daily build log and social draft.";
+  }
+
+  return "Use this build log as public proof, then collect feedback for the next iteration.";
 }
 
 async function writeIfMissing(path: string, content: string) {
