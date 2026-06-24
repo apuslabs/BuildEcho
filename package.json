@@ -10,7 +10,8 @@
     "build": "tsc",
     "dev": "tsx src/cli.ts",
     "check": "tsc --noEmit",
-    "generate:day0-card": "node scripts/generate-day0-card.mjs"
+    "generate:day0-card": "node scripts/generate-day0-card.mjs",
+    "generate:day1-card": "node scripts/generate-day1-card.mjs"
   },
   "keywords": [
     "agent",
