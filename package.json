@@ -9,7 +9,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/cli.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "generate:day0-card": "node scripts/generate-day0-card.mjs"
   },
   "keywords": [
     "agent",
@@ -21,6 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.15.29",
+    "sharp": "^0.35.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
