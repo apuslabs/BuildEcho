@@ -8,9 +8,9 @@ off cleanly.
 
 ## Mission
 
-BuildEcho is an agentic public-building loop for developers.
+BuildEcho is an agentic open-source growth loop inside a repository.
 
-It turns real development progress into:
+It helps open-source projects turn real development progress into:
 
 - Public proof
 - Build logs
@@ -18,10 +18,10 @@ It turns real development progress into:
 - Community feedback
 - Next build steps
 
-The product is not a posting bot. The product is the loop:
+The product is not a posting bot. The product is a governed loop:
 
 ```text
-Build -> Tell -> Listen -> Decide -> Build
+Build -> Prove -> Publish -> Listen -> Decide -> Build
 ```
 
 ## First Files to Read
@@ -30,10 +30,11 @@ Every coding agent must read these files before making changes:
 
 1. `README.md`
 2. `docs/AGENT_LOOP.md`
-3. `docs/PROMPT.md`
-4. `docs/ROADMAP.md`
-5. `CONTRIBUTING.md`
-6. `.buildecho/context.md`
+3. `docs/VISION.md`
+4. `docs/PROMPT.md`
+5. `docs/ROADMAP.md`
+6. `CONTRIBUTING.md`
+7. `.buildecho/context.md`
 
 ## Operating Principles
 
@@ -44,7 +45,9 @@ Every coding agent must read these files before making changes:
 4. Do not add spam automation.
 5. Do not invent product capabilities in docs.
 6. Preserve repo-local project memory under `.buildecho/`.
-7. Verify changes before handing off.
+7. Treat agent autonomy as a permissioned system, not an excuse to bypass
+   review.
+8. Verify changes before handing off.
 
 ## Target Function
 
@@ -62,6 +65,24 @@ Hype.
 Unverified claims.
 Autonomous spam.
 ```
+
+## Agent Team Model
+
+BuildEcho should work like a governed agent team:
+
+| Agent | Responsibility |
+| --- | --- |
+| Orchestrator Agent | Runs the loop, chooses work, and merges outputs |
+| Builder Agent | Understands repository activity and implementation progress |
+| Proof Agent | Connects public claims to evidence |
+| Story Agent | Writes build logs, social drafts, launch notes, and video scripts |
+| Growth Agent | Discovers relevant audiences and possible user segments |
+| Community Agent | Summarizes feedback, objections, and contributor signals |
+| Strategy Agent | Recommends the next build, demo, benchmark, or documentation step |
+| Governor Agent | Blocks hype, unsupported claims, spam, and unsafe automation |
+
+CEO, CTO, and CMO are useful mental models, but repository files should prefer
+concrete agent responsibilities.
 
 ## Work Intake Protocol
 
@@ -95,6 +116,33 @@ Avoid early contributions:
 - Browser automation for mass engagement.
 - Large dashboard work before the CLI loop is useful.
 - Heavy framework rewrites.
+
+## Permission Boundary
+
+Allowed without human approval:
+
+- Read local repository activity.
+- Generate local build logs.
+- Draft posts, threads, launch notes, and video scripts.
+- Suggest next build steps.
+- Run quality checks.
+
+Requires human approval:
+
+- Publishing to any public channel.
+- Sending email.
+- Mentioning users.
+- Commenting on external GitHub issues or discussions.
+- Opening outreach pull requests.
+- Scheduling posts.
+
+Forbidden:
+
+- Mass outreach.
+- Scraping private contact information.
+- Fake users, fake testimonials, or fake metrics.
+- Unsupported production-readiness claims.
+- Repeatedly tagging maintainers or users.
 
 ## Verification Protocol
 

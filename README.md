@@ -3,17 +3,49 @@
 
   # BuildEcho
 
-  **Agentic public building for developers.**
+  **An agentic open-source growth loop inside every repo.**
 
-  Turn real development progress into **public proof**, **build logs**,
-  **social drafts**, **community feedback**, and **next build steps**.
+  Help open-source projects **build**, **publish**, **listen**, and **improve**
+  through autonomous agent loops that stay truthful, reviewable, and
+  human-approved.
 
   [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
   [![Status](https://img.shields.io/badge/status-day%200-orange.svg)](docs/PUBLIC_BUILD_DAY_0.md)
   [![Agent-driven](https://img.shields.io/badge/agent--driven-human--approved-blue.svg)](docs/AGENT_HARNESS.md)
 
-  [Quick Start](#-quick-start) • [How It Works](#-how-it-works) • [Agent Team](#-agent-team) • [Contributing](#-contributing)
+  [Vision](#-vision) • [Quick Start](#-quick-start) • [How It Works](#-how-it-works) • [Agent Team](#-agent-team) • [Contributing](#-contributing)
 </div>
+
+---
+
+## Vision
+
+BuildEcho exists to help open-source projects compound.
+
+Most projects do not fail because nothing is being built. They fail because the
+work stays invisible, the story stays unclear, feedback arrives too late, and
+the next build step is not connected to real community signals.
+
+BuildEcho turns a repository into a small agentic company:
+
+- A builder loop that understands real code progress.
+- A story loop that turns proof into useful public updates.
+- A community loop that listens for demand, confusion, and objections.
+- A strategy loop that converts feedback into the next build step.
+- A governance loop that blocks hype, spam, and unsafe automation.
+
+The long-term goal is not just to generate posts. The goal is to give every
+open-source project a 24-hour agentic operating loop for building, explaining,
+learning, and growing.
+
+```text
+Build -> Prove -> Publish -> Listen -> Decide -> Build
+```
+
+BuildEcho should become the repo-native system that helps a project earn trust,
+contributors, users, and momentum without turning public building into spam.
+
+See [docs/VISION.md](docs/VISION.md).
 
 ---
 
@@ -27,19 +59,21 @@ Most developers build every day, but their progress stays invisible.
 - User feedback never becomes the next build loop.
 - Developers know they should build in public, but the workflow is manual.
 
-**BuildEcho solves this with an agentic loop:**
+**BuildEcho solves this with a governed agentic loop:**
 
 - Read real project activity.
 - Extract what is worth sharing.
 - Attach proof before claims.
 - Draft updates for different channels.
+- Discover feedback, questions, and possible users.
+- Recommend the next build, demo, benchmark, or doc improvement.
 - Keep humans in the publishing loop.
-- Learn from community feedback.
+- Learn from community response.
 
-BuildEcho is not a posting bot. It is a public-building loop:
+BuildEcho is not a posting bot. It is an operating loop for open-source growth:
 
 ```text
-Build -> Tell -> Listen -> Decide -> Build
+Build -> Prove -> Publish -> Listen -> Decide -> Build
 ```
 
 ---
@@ -55,12 +89,13 @@ Build -> Tell -> Listen -> Decide -> Build
           │
           v
 ┌──────────────────────────────────────────┐
-│              BuildEcho Agent             │
+│          BuildEcho Agent Team            │
 │  • understand real progress              │
-│  • find shareable signals                │
-│  • attach proof                          │
+│  • find proof and public signals         │
 │  • draft channel-specific updates        │
-│  • check truthfulness and safety         │
+│  • discover feedback and demand          │
+│  • recommend the next build step         │
+│  • check truthfulness, safety, and spam  │
 └─────────┬────────────────────────────────┘
           │
           v
@@ -71,8 +106,9 @@ Build -> Tell -> Listen -> Decide -> Build
           │
           v
 ┌──────────────────────────────────────────┐
-│  Public build log + social drafts        │
-│  X / LinkedIn / Reddit / HN / Discord    │
+│  Public artifacts                        │
+│  build log / social drafts / video plan  │
+│  GitHub issue or discussion suggestions  │
 └─────────┬────────────────────────────────┘
           │
           v
@@ -192,18 +228,19 @@ BuildEcho should not:
 
 ## Agent Team
 
-BuildEcho presents one product surface, but works like an agent team internally.
+BuildEcho presents one product surface, but works like a governed agent team
+inside the repository.
 
 | Agent | Role |
 | --- | --- |
-| Orchestrator Agent | Decides which loop to run and merges outputs |
-| Builder Agent | Reads commits, PRs, issues, releases, and docs |
-| Signal Agent | Finds the progress worth sharing |
-| Proof Agent | Attaches evidence before claims |
-| Narrator Agent | Writes channel-specific drafts |
-| Community Agent | Summarizes external feedback |
-| Strategy Agent | Recommends the next build step |
-| Quality Agent | Checks truthfulness, tone, risk, and community fit |
+| Orchestrator Agent | Owns the loop, chooses work, and merges outputs |
+| Builder Agent | Reads commits, PRs, issues, releases, docs, and demos |
+| Proof Agent | Connects every claim to commits, diffs, screenshots, metrics, or feedback |
+| Story Agent | Writes build logs, social drafts, launch notes, and video scripts |
+| Growth Agent | Finds relevant communities, projects, issues, and potential users |
+| Community Agent | Summarizes external feedback, objections, and contributor signals |
+| Strategy Agent | Recommends the next build, demo, benchmark, or doc improvement |
+| Governor Agent | Blocks unsupported claims, unsafe outreach, spam, and policy violations |
 
 See [docs/AGENT_LOOP.md](docs/AGENT_LOOP.md).
 
@@ -217,14 +254,16 @@ If you are a coding agent, read these first:
 
 1. [docs/AGENT_HARNESS.md](docs/AGENT_HARNESS.md)
 2. [.buildecho/context.md](.buildecho/context.md)
-3. [docs/AGENT_LOOP.md](docs/AGENT_LOOP.md)
-4. [docs/PROMPT.md](docs/PROMPT.md)
-5. [docs/ROADMAP.md](docs/ROADMAP.md)
+3. [docs/VISION.md](docs/VISION.md)
+4. [docs/AGENT_LOOP.md](docs/AGENT_LOOP.md)
+5. [docs/PROMPT.md](docs/PROMPT.md)
+6. [docs/ROADMAP.md](docs/ROADMAP.md)
 
 The harness defines:
 
 - Required context files
 - Target function
+- Agent roles and permission boundaries
 - Allowed early contributions
 - Verification protocol
 - Human approval boundary
@@ -237,6 +276,7 @@ The harness defines:
 ### Phase 0: Make the idea legible
 
 - README
+- Vision document
 - Agent loop documentation
 - First system prompt
 - Contribution guide
@@ -256,18 +296,31 @@ The harness defines:
 - Generate daily build logs through GitHub Actions
 - Open draft PRs or issues with suggested public updates
 
-### Phase 3: Review and Publish
+### Phase 3: Agent Team and Governance
+
+- Orchestrator, Builder, Proof, Story, Growth, Community, Strategy, and Governor agents
+- Repo-local policies for autonomous, approval-required, and forbidden actions
+- Human approval queue for publishing and outreach
+- Quality gates for claims, spam risk, tests, tone, and community fit
+
+### Phase 4: Review and Publish
 
 - Human approval queue
 - Optional X, LinkedIn, Discord, Reddit integrations
 - Draft scheduling
 - Channel-specific style guides
 
-### Phase 4: Feedback Loop
+### Phase 5: Feedback Loop
 
 - Collect comments, stars, clicks, signups, and issues
 - Summarize feedback into product insights
 - Recommend next build actions
+
+### Phase 6: Daily Video Loop
+
+- Generate demo scripts, shot lists, cover images, and subtitles
+- Produce short video drafts from real progress
+- Keep video publishing human-approved
 
 See [docs/ROADMAP.md](docs/ROADMAP.md).
 

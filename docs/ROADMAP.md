@@ -3,6 +3,7 @@
 ## Phase 0: Make the Idea Clear
 
 - README
+- Vision document
 - Agent loop documentation
 - First system prompt
 - Contribution guide
@@ -32,20 +33,35 @@ Capabilities:
 - Generate daily build logs through GitHub Actions
 - Open a draft PR or issue with suggested public updates
 
-## Phase 3: Review and Publish
+## Phase 3: Agent Team and Governance
+
+- Orchestrator, Builder, Proof, Story, Growth, Community, Strategy, and Governor
+  agents
+- Repo-local policies for autonomous, approval-required, and forbidden actions
+- Claim checking and spam-risk checks
+- Human approval queue for publishing and outreach
+
+## Phase 4: Review and Publish
 
 - Human approval queue
 - Optional X, LinkedIn, Discord, Reddit integrations
 - Draft scheduling
 - Channel-specific style guides
 
-## Phase 4: Feedback Loop
+## Phase 5: Feedback Loop
 
 - Collect comments, replies, stars, clicks, signups, and issues
 - Summarize feedback into product insights
 - Recommend next build actions
 
-## Phase 5: Multi-Project Dashboard
+## Phase 6: Daily Video Loop
+
+- Generate demo scripts, shot lists, cover images, and subtitles
+- Record terminal, browser, or product demos
+- Produce short video drafts from real progress
+- Keep video publishing human-approved
+
+## Phase 7: Multi-Project Dashboard
 
 - Hosted dashboard
 - Team workflows
@@ -57,5 +73,6 @@ Capabilities:
 
 - Fully autonomous posting
 - Spam automation
+- Mass email or mass GitHub outreach
 - Growth hacking without proof
 - Replacing human product judgment

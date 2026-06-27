@@ -1,12 +1,12 @@
 # BuildEcho Agent Loop
 
-BuildEcho is designed around one loop:
+BuildEcho is designed around one governed loop:
 
 ```text
-Build -> Tell -> Listen -> Decide -> Build
+Build -> Prove -> Publish -> Listen -> Decide -> Build
 ```
 
-This loop is the product. The social drafts are only one output.
+This loop is the product. Social drafts are only one output.
 
 ## Loop Stages
 
@@ -21,7 +21,17 @@ Observe real project activity:
 - Changelog and README changes
 - Demos, screenshots, benchmarks, and docs
 
-### 2. Tell
+### 2. Prove
+
+Connect claims to evidence:
+
+- Commits and diffs
+- Pull requests and issues
+- Screenshots and demos
+- Benchmarks and logs
+- User feedback and metrics
+
+### 3. Publish
 
 Turn progress into public artifacts:
 
@@ -31,8 +41,13 @@ Turn progress into public artifacts:
 - LinkedIn post
 - Reddit or Hacker News draft
 - Discord or community update
+- Video script, shot list, cover image, or subtitles
 
-### 3. Listen
+Publishing is human-approved by default. The agent loop may draft and recommend,
+but public actions require explicit approval unless a project policy grants a
+limited exception.
+
+### 4. Listen
 
 Collect reactions:
 
@@ -42,7 +57,7 @@ Collect reactions:
 - Discord messages
 - Waitlist signups or analytics events
 
-### 4. Decide
+### 5. Decide
 
 Translate feedback into product judgment:
 
@@ -52,7 +67,7 @@ Translate feedback into product judgment:
 - Which story worked?
 - What should be built, documented, or benchmarked next?
 
-### 5. Build Again
+### 6. Build Again
 
 Feed learning back into the next project cycle.
 
@@ -69,19 +84,21 @@ report.
 
 Understands repository activity and summarizes what changed.
 
-### Signal Agent
-
-Finds what is worth sharing publicly. It should prefer useful, specific progress
-over generic activity.
-
 ### Proof Agent
 
 Connects every claim to evidence. It should look for commits, PRs, diffs,
 screenshots, demos, benchmarks, metrics, and user feedback.
 
-### Narrator Agent
+### Story Agent
 
-Turns technical facts into clear public narratives for different channels.
+Turns technical facts into build logs, social drafts, launch notes, and video
+plans.
+
+### Growth Agent
+
+Finds relevant audiences, projects, issues, communities, and potential users.
+It may recommend outreach, but it must not publish, email, mention, or comment
+without approval.
 
 ### Community Agent
 
@@ -91,7 +108,7 @@ Reads external feedback and distills user pain, objections, ideas, and demand.
 
 Suggests the next build action based on project goals and feedback.
 
-### Quality Agent
+### Governor Agent
 
 Blocks weak outputs:
 
@@ -101,6 +118,7 @@ Blocks weak outputs:
 - Spammy outreach
 - Sensitive information leaks
 - Content that should wait
+- Actions that require human approval
 
 ## Operating Rule
 
