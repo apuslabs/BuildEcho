@@ -100,6 +100,7 @@ files such as:
   config.json
   context.md
   memory.md
+  policy.json
   agents/
   policies/
   build-logs/

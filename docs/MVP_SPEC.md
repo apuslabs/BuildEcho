@@ -82,6 +82,8 @@ The first MVP is complete when:
 - It includes all agent sections listed above.
 - It clearly marks publishing, outreach, mentions, and email as
   approval-required actions.
+- It includes a repo-local policy file for autonomous, approval-required, and
+  forbidden actions.
 - It does not contact external services.
 - `npm run check` passes.
 - `npm run build` passes.

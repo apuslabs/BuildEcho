@@ -148,6 +148,7 @@ BuildEcho keeps project memory in your repository:
   config.json       project settings
   context.md        current project context for humans and agents
   memory.md         long-running public-building memory
+  policy.json       autonomous, approval-required, and forbidden actions
   build-logs/       local build logs
   drafts/           social drafts
   feedback/         community feedback summaries

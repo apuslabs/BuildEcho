@@ -41,6 +41,39 @@ const defaultConfig: Config = {
   channels: ["x", "linkedin", "reddit", "discord"],
 };
 
+const defaultPolicy = {
+  version: 1,
+  defaultMode: "agent-driven-human-approved",
+  autonomous: [
+    "read_repository_activity",
+    "summarize_commits",
+    "summarize_changed_files",
+    "generate_local_build_logs",
+    "draft_social_posts",
+    "draft_video_scripts",
+    "suggest_next_build_steps",
+    "run_quality_checks",
+  ],
+  requiresApproval: [
+    "publish_to_public_channels",
+    "send_email",
+    "mention_users_or_maintainers",
+    "comment_on_external_github_issues",
+    "comment_on_external_github_discussions",
+    "open_external_pull_requests",
+    "schedule_posts",
+    "contact_potential_users",
+  ],
+  forbidden: [
+    "mass_outreach",
+    "scrape_private_contact_information",
+    "invent_users_metrics_or_testimonials",
+    "claim_production_readiness_without_evidence",
+    "repeat_mentions_or_review_requests",
+    "post_only_to_increase_volume",
+  ],
+};
+
 const command = process.argv[2] ?? "help";
 const commandArgs = process.argv.slice(3);
 
@@ -90,9 +123,10 @@ async function init() {
     ].join("\n"),
   );
   await writeIfMissing(join(stateDir, "prompts", "system.md"), await readRepoPrompt());
+  await writeIfMissing(join(stateDir, "policy.json"), `${JSON.stringify(defaultPolicy, null, 2)}\n`);
 
   console.log("BuildEcho initialized.");
-  console.log(`Created ${relative(stateDir)} with config, memory, and prompt files.`);
+  console.log(`Created ${relative(stateDir)} with config, memory, prompt, and policy files.`);
   console.log("Next: edit .buildecho/config.json, then run `npx buildecho daily`.");
 }
 
