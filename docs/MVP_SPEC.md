@@ -105,7 +105,7 @@ The first MVP should not:
 
 After the MVP works locally:
 
-1. Add `.buildecho/policy.json`.
+1. Make the CLI read `.buildecho/policy.json` when rendering Governor output.
 2. Add stronger Governor checks for unsupported claims and spam risk.
 3. Add GitHub API readers for issues, PRs, and releases.
 4. Add video assets: script, shot list, subtitles, and cover image.
