@@ -16,6 +16,7 @@ Commands:
 ```bash
 buildecho init
 buildecho daily
+buildecho daily --agent-team
 buildecho draft
 ```
 
@@ -24,6 +25,7 @@ Capabilities:
 - Create `.buildecho/`
 - Read local git history
 - Generate a markdown build log
+- Generate an agent-team daily report
 - Generate X, LinkedIn, Reddit/HN, and Discord drafts
 - Save outputs locally
 

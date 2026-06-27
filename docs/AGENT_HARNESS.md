@@ -159,6 +159,7 @@ If you change CLI behavior, also run the affected command:
 ```bash
 npm run dev -- init
 npm run dev -- daily
+npm run dev -- daily --agent-team
 ```
 
 Before handoff, check for non-English repository content:

@@ -1,7 +1,7 @@
 {
   "name": "buildecho",
   "version": "0.1.0",
-  "description": "Agentic public building for developers.",
+  "description": "An agentic open-source growth company inside every repo.",
   "type": "module",
   "bin": {
     "buildecho": "./dist/src/cli.js"

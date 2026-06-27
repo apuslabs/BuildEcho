@@ -129,7 +129,7 @@ cd BuildEcho
 npm install
 npm run build
 npm run dev -- init
-npm run dev -- daily
+npm run dev -- daily --agent-team
 ```
 
 When published as a package, the intended usage is:
@@ -137,6 +137,7 @@ When published as a package, the intended usage is:
 ```bash
 npx buildecho init
 npx buildecho daily
+npx buildecho daily --agent-team
 npx buildecho draft
 ```
 
@@ -172,6 +173,15 @@ A daily run should produce:
 | Discord update | Concise update for existing followers |
 | Next build step | What to build, document, benchmark, or ask next |
 | Quality check | Flags hype, unsupported claims, or risky content |
+
+The MVP agent-team report is available with:
+
+```bash
+buildecho daily --agent-team
+```
+
+It renders Orchestrator, Builder, Proof, Story, Growth, Strategy, and Governor
+sections in one governed daily report.
 
 Example:
 
