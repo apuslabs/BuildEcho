@@ -55,7 +55,8 @@ step.
 
 ## Agentic Company Model
 
-BuildEcho can be understood as a small agentic company inside a repository.
+BuildEcho can be understood as an agentic open-source growth company inside
+every repo.
 
 The external product should feel simple. Internally, the work is split across
 specialized agents:

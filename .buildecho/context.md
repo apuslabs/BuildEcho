@@ -1,6 +1,6 @@
 # BuildEcho Context
 
-BuildEcho is an open-source agentic growth loop inside a repository.
+BuildEcho is an agentic open-source growth company inside every repo.
 
 ## Current Positioning
 
@@ -11,7 +11,7 @@ build steps.
 Core line:
 
 ```text
-An agentic open-source growth loop inside every repo.
+An agentic open-source growth company inside every repo.
 ```
 
 Operating line:

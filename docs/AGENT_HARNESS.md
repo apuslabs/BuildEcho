@@ -8,7 +8,7 @@ off cleanly.
 
 ## Mission
 
-BuildEcho is an agentic open-source growth loop inside a repository.
+BuildEcho is an agentic open-source growth company inside every repo.
 
 It helps open-source projects turn real development progress into:
 

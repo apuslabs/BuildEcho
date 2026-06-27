@@ -3,7 +3,7 @@
 
   # BuildEcho
 
-  **An agentic open-source growth loop inside every repo.**
+  **An agentic open-source growth company inside every repo.**
 
   Help open-source projects **build**, **publish**, **listen**, and **improve**
   through autonomous agent loops that stay truthful, reviewable, and
@@ -26,7 +26,7 @@ Most projects do not fail because nothing is being built. They fail because the
 work stays invisible, the story stays unclear, feedback arrives too late, and
 the next build step is not connected to real community signals.
 
-BuildEcho turns a repository into a small agentic company:
+BuildEcho turns a repository into an agentic open-source growth company:
 
 - A builder loop that understands real code progress.
 - A story loop that turns proof into useful public updates.
@@ -180,7 +180,7 @@ Example:
 
 ## Real Progress
 - Added the first CLI commands: init, daily, draft.
-- Documented the Build -> Tell -> Listen -> Decide -> Build loop.
+- Documented the Build -> Prove -> Publish -> Listen -> Decide -> Build loop.
 - Added agent harness governance for future contributors.
 
 ## Public Angle
@@ -194,7 +194,7 @@ provide for other developers.
 - src/cli.ts
 
 ## X Draft
-Starting BuildEcho today: an agentic public-building loop for developers.
+Starting BuildEcho today: an agentic open-source growth company inside every repo.
 
 The goal is simple:
 turn real development progress into public proof, social drafts, community
