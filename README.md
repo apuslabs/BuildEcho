@@ -182,7 +182,9 @@ buildecho daily --agent-team
 ```
 
 It renders Orchestrator, Builder, Proof, Story, Growth, Strategy, and Governor
-sections in one governed daily report.
+sections in one governed daily report. The Governor section reads
+`.buildecho/policy.json`, so each repository can define autonomous,
+approval-required, and forbidden actions.
 
 Example:
 

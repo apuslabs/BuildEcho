@@ -33,6 +33,14 @@ type GitActivity = {
   fallbackUsed: boolean;
 };
 
+type Policy = {
+  version: number;
+  defaultMode: string;
+  autonomous: string[];
+  requiresApproval: string[];
+  forbidden: string[];
+};
+
 const defaultConfig: Config = {
   projectName: guessProjectName(),
   description: "Describe what you are building.",
@@ -41,7 +49,7 @@ const defaultConfig: Config = {
   channels: ["x", "linkedin", "reddit", "discord"],
 };
 
-const defaultPolicy = {
+const defaultPolicy: Policy = {
   version: 1,
   defaultMode: "agent-driven-human-approved",
   autonomous: [
@@ -133,11 +141,12 @@ async function init() {
 async function daily() {
   await ensureStateDirs();
   const config = await readConfig();
+  const policy = await readPolicy();
   const date = localDate();
   const activity = readGitActivity();
   const agentTeamMode = commandArgs.includes("--agent-team");
   const content = agentTeamMode
-    ? renderAgentTeamReport(config, date, activity)
+    ? renderAgentTeamReport(config, policy, date, activity)
     : renderDailyLog(config, date, activity);
   const outputPath = join(stateDir, "build-logs", `${date}.md`);
 
@@ -163,6 +172,23 @@ async function readConfig(): Promise<Config> {
   }
   const raw = await readFile(configPath, "utf8");
   return { ...defaultConfig, ...JSON.parse(raw) } as Config;
+}
+
+async function readPolicy(): Promise<Policy> {
+  const policyPath = join(stateDir, "policy.json");
+  if (!existsSync(policyPath)) {
+    await writeIfMissing(policyPath, `${JSON.stringify(defaultPolicy, null, 2)}\n`);
+  }
+
+  const raw = await readFile(policyPath, "utf8");
+  const policy = { ...defaultPolicy, ...JSON.parse(raw) } as Policy;
+
+  return {
+    ...policy,
+    autonomous: policy.autonomous ?? defaultPolicy.autonomous,
+    requiresApproval: policy.requiresApproval ?? defaultPolicy.requiresApproval,
+    forbidden: policy.forbidden ?? defaultPolicy.forbidden,
+  };
 }
 
 function readGitActivity() {
@@ -357,7 +383,7 @@ function renderDailyLog(config: Config, date: string, activity: GitActivity) {
   ].join("\n");
 }
 
-function renderAgentTeamReport(config: Config, date: string, activity: GitActivity) {
+function renderAgentTeamReport(config: Config, policy: Policy, date: string, activity: GitActivity) {
   const publicAngle = buildPublicAngle(config, activity);
   const proof = buildProofList(activity);
   const xDraft = buildXDraft(config, activity, publicAngle);
@@ -368,13 +394,14 @@ function renderAgentTeamReport(config: Config, date: string, activity: GitActivi
   const videoScript = buildVideoScript(config, activity, publicAngle);
   const nextStep = buildNextStep(activity);
   const missingProof = buildMissingProof(activity);
-  const governorFindings = buildGovernorFindings(activity);
+  const governorFindings = buildGovernorFindings(activity, policy);
 
   return [
     `# BuildEcho Agent Team Report - ${date}`,
     "",
     `Project: ${config.projectName}`,
     `Description: ${config.description}`,
+    `Policy mode: ${policy.defaultMode}`,
     `Audience: ${config.audience}`,
     `Tone: ${config.tone}`,
     `Channels: ${config.channels.join(", ")}`,
@@ -457,13 +484,17 @@ function renderAgentTeamReport(config: Config, date: string, activity: GitActivi
     "",
     ...governorFindings,
     "",
+    "### Autonomous Actions",
+    "",
+    ...renderPolicyList(policy.autonomous),
+    "",
     "### Approval-Required Actions",
     "",
-    "- Publishing to any public channel.",
-    "- Sending email.",
-    "- Mentioning users or maintainers.",
-    "- Commenting on external GitHub issues or discussions.",
-    "- Scheduling posts.",
+    ...renderPolicyList(policy.requiresApproval),
+    "",
+    "### Forbidden Actions",
+    "",
+    ...renderPolicyList(policy.forbidden),
     "",
   ].join("\n");
 }
@@ -490,6 +521,18 @@ function renderChangedFiles(activity: GitActivity) {
   }
 
   return activity.changedFiles.slice(0, 20).map((file) => `- ${file}`);
+}
+
+function renderPolicyList(actions: string[]) {
+  if (actions.length === 0) {
+    return ["- None configured."];
+  }
+
+  return actions.map((action) => `- ${humanizePolicyAction(action)}`);
+}
+
+function humanizePolicyAction(action: string) {
+  return action.replaceAll("_", " ");
 }
 
 function buildProofList(activity: GitActivity) {
@@ -633,12 +676,13 @@ function buildGrowthSuggestions(config: Config, activity: GitActivity) {
   return suggestions;
 }
 
-function buildGovernorFindings(activity: GitActivity) {
+function buildGovernorFindings(activity: GitActivity, policy: Policy) {
   const findings = [
     "- Unsupported claims: do not claim external adoption, revenue, users, or production readiness unless evidence exists.",
-    "- Spam risk: keep outreach as drafts; do not mass mention, mass email, or comment on unrelated issues.",
+    `- Spam risk: ${buildSpamRiskSummary(policy)}.`,
     "- Sensitive information: review diffs and generated text before publishing.",
-    "- Human approval: required before publishing or contacting anyone.",
+    `- Human approval: required for ${policy.requiresApproval.length} configured action types.`,
+    `- Forbidden behavior: ${policy.forbidden.length} configured action types must be blocked.`,
   ];
 
   if (activity.commits.length === 0) {
@@ -650,6 +694,18 @@ function buildGovernorFindings(activity: GitActivity) {
   }
 
   return findings;
+}
+
+function buildSpamRiskSummary(policy: Policy) {
+  const blockedMassOutreach = policy.forbidden.includes("mass_outreach");
+  const blockedPrivateScraping = policy.forbidden.includes("scrape_private_contact_information");
+  const approvalForContact = policy.requiresApproval.includes("contact_potential_users");
+
+  if (blockedMassOutreach && blockedPrivateScraping && approvalForContact) {
+    return "policy blocks mass outreach and private contact scraping, and requires approval before contacting potential users";
+  }
+
+  return "review outreach manually before any public or external action";
 }
 
 function buildNextStep(activity: GitActivity) {

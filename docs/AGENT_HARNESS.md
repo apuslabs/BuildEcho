@@ -186,3 +186,7 @@ If the work changes project direction, update `.buildecho/context.md`.
 BuildEcho may generate drafts, recommendations, and review reports. It must not
 publish, reply, mention users, or contact communities without explicit human
 approval.
+
+Repo-local policy lives in `.buildecho/policy.json`. The Governor Agent should
+use that file as the source of truth for autonomous, approval-required, and
+forbidden actions.
