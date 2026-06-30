@@ -31,10 +31,11 @@ Every coding agent must read these files before making changes:
 1. `README.md`
 2. `docs/AGENT_LOOP.md`
 3. `docs/VISION.md`
-4. `docs/PROMPT.md`
-5. `docs/ROADMAP.md`
-6. `CONTRIBUTING.md`
-7. `.buildecho/context.md`
+4. `docs/BUILD_HANDOFF.md`
+5. `docs/PROMPT.md`
+6. `docs/ROADMAP.md`
+7. `CONTRIBUTING.md`
+8. `.buildecho/context.md`
 
 ## Operating Principles
 
@@ -180,6 +181,7 @@ Every agent handoff should include:
 - What should happen next
 
 If the work changes project direction, update `.buildecho/context.md`.
+If the work changes current status or next steps, update `docs/BUILD_HANDOFF.md`.
 
 ## Human Approval Boundary
 

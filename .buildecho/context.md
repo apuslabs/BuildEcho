@@ -28,7 +28,7 @@ Build -> Prove -> Publish -> Listen -> Decide -> Build
 
 ## Current Phase
 
-Day 0 / repository bootstrap.
+Local CLI MVP.
 
 The project currently has:
 
@@ -41,6 +41,9 @@ The project currently has:
 - Minimal TypeScript CLI
 - GitHub Action example
 - Vision document for the agentic company model
+- MVP spec for the daily agent team report
+- Repo-local governance policy
+- Policy-driven Governor Agent output
 
 ## Near-Term Goal
 
@@ -48,10 +51,11 @@ Make the local CLI useful enough that a developer can run:
 
 ```bash
 npx buildecho init
-npx buildecho daily
+npx buildecho daily --agent-team
 ```
 
-and receive a truthful build log plus useful public-building draft structure.
+and receive a truthful agent team report with real git activity, proof, public
+drafts, next steps, and policy-aware Governor output.
 
 ## Long-Term Goal
 
@@ -87,10 +91,10 @@ Reason:
 
 ## Next Useful Steps
 
-1. Improve `daily` so it produces stronger draft content instead of placeholders.
-2. Add a local git activity collector module.
-3. Add prompt templates per agent role.
-4. Add repo-local policy files for autonomous, approval-required, and forbidden
-   actions.
-5. Add examples for a real developer project.
-6. Add a quality check that flags unsupported claims and spam risk.
+1. Make `daily --agent-team` read `.buildecho/memory.md` and include memory
+   context.
+2. Add a `remember` command that appends verified run summaries to
+   `.buildecho/memory.md`.
+3. Add stronger Governor checks for unsupported claims and spam risk.
+4. Add examples for a real developer project.
+5. Run a case study on NovitaBox or 9router.
